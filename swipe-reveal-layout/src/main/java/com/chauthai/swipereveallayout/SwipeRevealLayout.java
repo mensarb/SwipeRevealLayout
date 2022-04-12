@@ -29,19 +29,19 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
-import android.support.v4.view.GestureDetectorCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.core.view.GestureDetectorCompat;
+import androidx.core.view.ViewCompat;
+import androidx.customview.widget.ViewDragHelper;
 
 @SuppressLint("RtlHardcoded")
 public class SwipeRevealLayout extends ViewGroup {
+    
     // These states are used only for ViewBindHelper
     protected static final int STATE_CLOSE     = 0;
     protected static final int STATE_CLOSING   = 1;
@@ -80,22 +80,22 @@ public class SwipeRevealLayout extends ViewGroup {
     /**
      * The rectangle position of the main view when the layout is closed.
      */
-    private Rect mRectMainClose = new Rect();
+    private final Rect mRectMainClose = new Rect();
 
     /**
      * The rectangle position of the main view when the layout is opened.
      */
-    private Rect mRectMainOpen  = new Rect();
+    private final Rect mRectMainOpen = new Rect();
 
     /**
      * The rectangle position of the secondary view when the layout is closed.
      */
-    private Rect mRectSecClose  = new Rect();
+    private final Rect mRectSecClose = new Rect();
 
     /**
      * The rectangle position of the secondary view when the layout is opened.
      */
-    private Rect mRectSecOpen   = new Rect();
+    private final Rect mRectSecOpen = new Rect();
 
     /**
      * The minimum distance (px) to the closest drag edge that the SwipeRevealLayout

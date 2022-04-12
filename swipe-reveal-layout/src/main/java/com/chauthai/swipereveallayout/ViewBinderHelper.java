@@ -24,8 +24,8 @@
 
 package com.chauthai.swipereveallayout;
 
+import android.app.Activity;
 import android.os.Bundle;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,15 +42,15 @@ import java.util.Set;
  * save and restore the open/close state of the view.</p>
  *
  * <p>Optionally, if you also want to save and restore the open/close state when the device's
- * orientation is changed, call {@link #saveStates(Bundle)} in {@link android.app.Activity#onSaveInstanceState(Bundle)}
- * and {@link #restoreStates(Bundle)} in {@link android.app.Activity#onRestoreInstanceState(Bundle)}</p>
+ * orientation is changed, call {@link #saveStates(Bundle)} in {@link Activity#onSaveInstanceState(Bundle)}
+ * and {@link #restoreStates(Bundle)} in {@link Activity#onRestoreInstanceState(Bundle)}</p>
  */
 public class ViewBinderHelper {
     private static final String BUNDLE_MAP_KEY = "ViewBinderHelper_Bundle_Map_Key";
 
-    private Map<String, Integer> mapStates = Collections.synchronizedMap(new HashMap<String, Integer>());
-    private Map<String, SwipeRevealLayout> mapLayouts = Collections.synchronizedMap(new HashMap<String, SwipeRevealLayout>());
-    private Set<String> lockedSwipeSet = Collections.synchronizedSet(new HashSet<String>());
+    private Map<String, Integer> mapStates = Collections.synchronizedMap(new HashMap<>());
+    private Map<String, SwipeRevealLayout> mapLayouts = Collections.synchronizedMap(new HashMap<>());
+    private Set<String> lockedSwipeSet = Collections.synchronizedSet(new HashSet<>());
 
     private volatile boolean openOnlyOne = false;
     private final Object stateChangeLock = new Object();
@@ -71,14 +71,11 @@ public class ViewBinderHelper {
         mapLayouts.put(id, swipeLayout);
 
         swipeLayout.abort();
-        swipeLayout.setDragStateChangeListener(new SwipeRevealLayout.DragStateChangeListener() {
-            @Override
-            public void onDragStateChanged(int state) {
-                mapStates.put(id, state);
+        swipeLayout.setDragStateChangeListener(state -> {
+            mapStates.put(id, state);
 
-                if (openOnlyOne) {
-                    closeOthers(id, swipeLayout);
-                }
+            if (openOnlyOne) {
+                closeOthers(id, swipeLayout);
             }
         });
 
@@ -106,7 +103,7 @@ public class ViewBinderHelper {
 
     /**
      * Only if you need to restore open/close state when the orientation is changed.
-     * Call this method in {@link android.app.Activity#onSaveInstanceState(Bundle)}
+     * Call this method in {@link Activity#onSaveInstanceState(Bundle)}
      */
     public void saveStates(Bundle outState) {
         if (outState == null)
@@ -125,7 +122,6 @@ public class ViewBinderHelper {
      * Only if you need to restore open/close state when the orientation is changed.
      * Call this method in {@link android.app.Activity#onRestoreInstanceState(Bundle)}
      */
-    @SuppressWarnings({"unchecked", "ConstantConditions"})
     public void restoreStates(Bundle inState) {
         if (inState == null)
             return;

@@ -1,26 +1,24 @@
 package com.chauthai.swipereveallayoutdemo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.recyclerview.widget.RecyclerView;
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Chau Thai on 4/8/16.
  */
 public class RecyclerAdapter extends RecyclerView.Adapter {
-    private List<String> mDataSet = new ArrayList<>();
+    private List<String> mDataSet;
     private LayoutInflater mInflater;
     private Context mContext;
     private final ViewBinderHelper binderHelper = new ViewBinderHelper();
@@ -53,7 +51,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
             binderHelper.bind(holder.swipeLayout, data);
 
             // Bind your data here
-            holder.bind(data);
+            holder.bind(data, position);
         }
     }
 
@@ -66,7 +64,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
 
     /**
      * Only if you need to restore open/close state when the orientation is changed.
-     * Call this method in {@link android.app.Activity#onSaveInstanceState(Bundle)}
+     * Call this method in {@link Activity#onSaveInstanceState(Bundle)}
      */
     public void saveStates(Bundle outState) {
         binderHelper.saveStates(outState);
@@ -74,7 +72,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
 
     /**
      * Only if you need to restore open/close state when the orientation is changed.
-     * Call this method in {@link android.app.Activity#onRestoreInstanceState(Bundle)}
+     * Call this method in {@link Activity#onRestoreInstanceState(Bundle)}
      */
     public void restoreStates(Bundle inState) {
         binderHelper.restoreStates(inState);
@@ -94,24 +92,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
             textView = (TextView) itemView.findViewById(R.id.text);
         }
 
-        public void bind(final String data) {
-            deleteLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mDataSet.remove(getAdapterPosition());
-                    notifyItemRemoved(getAdapterPosition());
-                }
+        public void bind(final String data, int position) {
+            deleteLayout.setOnClickListener(v -> {
+                mDataSet.remove(position);
+                notifyItemRemoved(position);
             });
 
             textView.setText(data);
 
-            frontLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String displayText = "" + data + " clicked";
-                    Toast.makeText(mContext, displayText, Toast.LENGTH_SHORT).show();
-                    Log.d("RecyclerAdapter", displayText);
-                }
+            frontLayout.setOnClickListener(view -> {
+                String displayText = "" + data + " clicked";
+                Toast.makeText(mContext, displayText, Toast.LENGTH_SHORT).show();
+                Log.d("RecyclerAdapter", displayText);
             });
         }
     }
