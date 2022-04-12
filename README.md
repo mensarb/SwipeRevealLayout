@@ -1,6 +1,9 @@
 ## SwipeRevealLayout
 A layout that you can swipe/slide to show another layout.
 
+[![Platform](https://img.shields.io/badge/platform-Android-yellow.svg)](https://www.android.com)
+[![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
+
 ### Demo
 ##### Overview
 ![Demo all](https://raw.githubusercontent.com/chthai64/SwipeRevealLayout/master/art/demo_all.gif)
@@ -26,7 +29,7 @@ Drag mode same_level:
 #### Dependencies
 ```groovy
 dependencies {
-    compile 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
+  implementation 'com.github.mensarb:SwipeRevealLayout:2.0.0'
 }
 ```
 
